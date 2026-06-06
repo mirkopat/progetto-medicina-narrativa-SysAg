@@ -4,15 +4,22 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# ============================================
+# SCELTA DEL PROVIDER
+# ============================================
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
+
+# ============================================
+# CONFIGURAZIONE GEMINI
+# ============================================
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_MODEL = "gemini-2.5-flash"
 
-# Modello valido dalla lista
-MODEL_NAME = "gemini-2.5-flash"  # ← CAMBIATO
+# ============================================
+# CONFIGURAZIONE OLLAMA
+# ============================================
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma2:2b")
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "localhost")
+OLLAMA_PORT = int(os.getenv("OLLAMA_PORT", "11434"))
 
-TEMPERATURA = 0.7
-MAX_TOKEN = 1024
-
-if not GEMINI_API_KEY:
-    print("⚠️ ATTENZIONE: GEMINI_API_KEY non trovata nel file .env")
-else:
-    print(f"✅ Configurazione OK (API Key: {GEMINI_API_KEY[:10]}...)")
+print(f"🔧 Config - Provider: {LLM_PROVIDER}")

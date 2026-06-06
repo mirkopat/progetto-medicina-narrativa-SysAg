@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.gemini_client import GeminiClient
+from utils.llm_client import LLMClient
 
 class DominioFisico:
     """
@@ -13,7 +13,7 @@ class DominioFisico:
     """
     
     def __init__(self):
-        self.client = GeminiClient()
+        self.llm = LLMClient()
     
     def _get_punteggio(self, messaggio: str, fattore: str, descrizione: str, 
                        scale: dict) -> int:
@@ -36,7 +36,7 @@ class DominioFisico:
         """
         
         try:
-            risposta = self.client.generate(prompt)
+            risposta = self.llm.generate(prompt)
             punteggio = int(risposta.strip())
             if 1 <= punteggio <= 5:
                 return punteggio
