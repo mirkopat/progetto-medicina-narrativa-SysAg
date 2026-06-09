@@ -17,9 +17,9 @@ class DominioFisico:
     
     def _get_punteggio(self, messaggio: str, fattore: str, descrizione: str, 
                        scale: dict) -> int:
-        """Metodo interno per ottenere un punteggio da Gemini"""
+        """Metodo interno per ottenere un punteggio"""
         prompt = f"""
-        Analizza il seguente messaggio di un paziente con malattia cronica.
+        Analizza il seguente messaggio di una persona anziana.
         
         Messaggio: "{messaggio}"
         

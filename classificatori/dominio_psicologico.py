@@ -17,7 +17,7 @@ class DominioPsicologico:
     
     def _get_punteggio(self, messaggio: str, fattore: str, descrizione: str, scale: dict) -> int:
         prompt = f"""
-        Analizza il seguente messaggio di un paziente.
+        Analizza il seguente messaggio di una persona anziana.
         Messaggio: "{messaggio}"
         Valuta {descrizione} ({fattore}) su scala 1-5:
         1={scale['1']} 2={scale['2']} 3={scale['3']} 4={scale['4']} 5={scale['5']}
