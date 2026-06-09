@@ -1,0 +1,35 @@
+{
+  "user_id": "orietta",
+  "storico": [
+    {
+      "timestamp": "2026-06-09T15:45:22.127633",
+      "punteggi_domini": {
+        "fisico": 42.86,
+        "psicologico": 54.17,
+        "sociale": 58.33,
+        "ambientale": 53.12
+      },
+      "qol_totale": 52.12
+    },
+    {
+      "timestamp": "2026-06-09T15:46:37.574053",
+      "punteggi_domini": {
+        "fisico": 35.71,
+        "psicologico": 54.17,
+        "sociale": 33.33,
+        "ambientale": 50.0
+      },
+      "qol_totale": 43.3
+    },
+    {
+      "timestamp": "2026-06-09T15:47:51.613092",
+      "punteggi_domini": {
+        "fisico": 53.57,
+        "psicologico": 45.83,
+        "sociale": 41.67,
+        "ambientale": 50.0
+      },
+      "qol_totale": 47.77
+    }
+  ]
+}

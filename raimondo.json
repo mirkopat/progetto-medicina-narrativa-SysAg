@@ -1,0 +1,35 @@
+{
+  "user_id": "raimondo",
+  "storico": [
+    {
+      "timestamp": "2026-06-09T16:32:13.874328",
+      "punteggi_domini": {
+        "fisico": 53.57,
+        "psicologico": 70.83,
+        "sociale": 66.67,
+        "ambientale": 59.38
+      },
+      "qol_totale": 62.61
+    },
+    {
+      "timestamp": "2026-06-09T16:33:32.577180",
+      "punteggi_domini": {
+        "fisico": 60.71,
+        "psicologico": 70.83,
+        "sociale": 75.0,
+        "ambientale": 59.38
+      },
+      "qol_totale": 66.48
+    },
+    {
+      "timestamp": "2026-06-09T16:34:51.629704",
+      "punteggi_domini": {
+        "fisico": 60.71,
+        "psicologico": 66.67,
+        "sociale": 50.0,
+        "ambientale": 50.0
+      },
+      "qol_totale": 56.84
+    }
+  ]
+}
