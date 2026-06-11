@@ -1,4 +1,3 @@
-# utils/llm_client.py
 """
 Client LLM unificato - supporta sia Gemini che Ollama
 """
@@ -27,9 +26,8 @@ class LLMClient:
             raise ValueError(f"Provider sconosciuto: {self.provider}")
     
     def _init_gemini(self):
-        """Inizializza il client Gemini"""
+        """Inizializza il client Gemini (versione corretta)"""
         from google import genai
-        genai.configure(api_key=GEMINI_API_KEY)
         self.model = GEMINI_MODEL
         self.client = genai.Client(api_key=GEMINI_API_KEY)
         print(f"✅ LLM Client: Gemini ({self.model})")

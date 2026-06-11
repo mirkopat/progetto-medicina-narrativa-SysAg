@@ -125,5 +125,5 @@ def modalita_test():
 
 if __name__ == "__main__":
     # Scegli qui la modalità:
-    modalita_interattiva(user_id="raimondo")  # ← cambia user_id per ogni persona
+    modalita_interattiva(user_id="giuseppe")  # ← cambia user_id per ogni persona
     # modalita_test()

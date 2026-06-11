@@ -68,6 +68,16 @@ python main.py
 
 Durante l'esecuzione, il sistema presenta un messaggio di benvenuto che invita l'utente a raccontare la propria giornata (scrittura riflessiva). Per terminare la conversazione, digitare `esci`.
 
+## Interfaccia web (Flask)
+Per avviare l'interfaccia web con chat e dashboard dei punteggi:
+
+```bash
+python app_flask.py
+```
+Poi apri il browser su http://127.0.0.1:5000
+
+**Nota sul warning di Flask**: Se compare il messaggio `WARNING: This is a development server...`, nessun problema. È solo un avviso standard di Flask e non influisce sul funzionamento dell'applicazione. Per la demo è perfettamente ok.
+
 ## Configurazione del provider LLM
 Creare un file .env nella directory principale con il seguente contenuto:
 
@@ -87,6 +97,8 @@ Il sistema è stato validato mediante un esperimento con 8 personas (profili fit
 
 I risultati dell'esperimento sono disponibili nella cartella documentazione/ sotto forma di tabelle Excel e grafici.
 
+**Nota**: Nella cartella "dati_json" sono presenti 9 file, di cui 8 sono personas fittizie. Il file rimanente, "demo_flask.json", riguarda un esempio di utilizzo del sistema con Flask. 
+
 ## Struttura del repository
 ```text
 progetto-medicina-narrativa-SysAg/
@@ -102,10 +114,14 @@ progetto-medicina-narrativa-SysAg/
 │   ├── gemini_client.py          # Client Gemini
 │   └── ollama_client.py          # Client Ollama
 │
+├── templates/                    # Template HTML per Flask
+│   └── index.html
+│
 ├── dati_json/                    # File JSON con i punteggi degli utenti (un file per utente)
 ├── documentazione/               # Materiali di supporto (tabelle Excel, screenshot)
 │
-├── main.py                       # Pipeline principale
+├── main.py                       # Pipeline principale (console)
+├── app_flask.py                  # Interfaccia web con Flask
 ├── qol_scorer.py                 # Calcolatore punteggi QoL
 ├── response_gen.py               # Generatore di risposte empatiche
 ├── config.py                     # Configurazioni di sistema
@@ -120,6 +136,7 @@ Le dipendenze Python sono elencate in requirements.txt:
 google-genai
 python-dotenv
 requests
+flask
 ```
 
 ## Limitazioni e sviluppi futuri

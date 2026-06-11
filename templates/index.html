@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medicina Narrativa - Chatbot QoL</title>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            height: 85vh;
+        }
+        .chat-panel {
+            flex: 2;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .dashboard {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .chat-header, .dashboard-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+        }
+        .user-message {
+            align-self: flex-end;
+        }
+        .bot-message {
+            align-self: flex-start;
+        }
+        .message-content {
+            padding: 10px 15px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+        .user-message .message-content {
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        .bot-message .message-content {
+            background: #e9ecef;
+            color: #333;
+            border-bottom-left-radius: 5px;
+        }
+        .chat-input-area {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+        }
+        #send-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #send-btn:hover {
+            background: #5a67d8;
+        }
+        .score-item {
+            margin-bottom: 20px;
+        }
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .score-bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .score-bar {
+            height: 25px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+            font-size: 12px;
+        }
+        .total-bar {
+            background: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-panel">
+            <div class="chat-header">💬 Conversazione</div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- I messaggi verranno inseriti qui -->
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="message-input" placeholder="Scrivi qui...">
+                <button id="send-btn">Invia</button>
+            </div>
+        </div>
+        <div class="dashboard">
+            <div class="dashboard-header">📊 Qualità della Vita</div>
+            <div id="scores-dashboard">
+                <!-- I punteggi verranno inseriti qui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Cronologia dei messaggi mantenuta lato client per visualizzazione
+    let messageHistory = [];
+
+    // Funzione per caricare la cronologia iniziale dal server
+    function loadInitialHistory() {
+        fetch('/get_history')
+            .then(response => response.json())
+            .then(data => {
+                if (data.history) {
+                    data.history.forEach(msg => {
+                        addMessageToUI(msg.role, msg.content);
+                    });
+                }
+                if (data.scores) {
+                    updateDashboard(data.scores);
+                }
+            })
+            .catch(error => console.error('Error loading history:', error));
+    }
+
+    // Funzione per inviare un nuovo messaggio
+    function sendMessage() {
+        const inputElement = document.getElementById('message-input');
+        const message = inputElement.value.trim();
+        if (!message) return;
+
+        // Mostra immediatamente il messaggio dell'utente
+        addMessageToUI('user', message);
+
+        // Pulisci il campo input
+        inputElement.value = '';
+
+        // Invia la richiesta al backend
+        fetch('/send_message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Aggiunge la risposta del bot alla UI
+            addMessageToUI('bot', data.response);
+            // Aggiorna il dashboard
+            updateDashboard(data.scores);
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Funzione per aggiungere un messaggio alla UI
+    function addMessageToUI(role, content) {
+        const messagesContainer = document.getElementById('chat-messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${role === 'user' ? 'user-message' : 'bot-message'}`;
+        messageDiv.innerHTML = `<div class="message-content">${escapeHtml(content)}</div>`;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Funzione per aggiornare il dashboard con i punteggi
+    function updateDashboard(scores) {
+        const dashboardDiv = document.getElementById('scores-dashboard');
+        dashboardDiv.innerHTML = `
+            <div class="score-item">
+                <div class="score-label"><span>💪 Fisico</span><span>${scores.fisico.toFixed(1)}</span></div>
+                <div class="score-bar-container"><div class="score-bar" style="background: #4CAF50; width: ${scores.fisico}%;"></div></div>
+            </div>
+            <div class="score-item">
+                <div class="score-label"><span>🧠 Psicologico</span><span>${scores.psicologico.toFixed(1)}</span></div>
+                <div class="score-bar-container"><div class="score-bar" style="background: #2196F3; width: ${scores.psicologico}%;"></div></div>
+            </div>
+            <div class="score-item">
+                <div class="score-label"><span>👥 Sociale</span><span>${scores.sociale.toFixed(1)}</span></div>
+                <div class="score-bar-container"><div class="score-bar" style="background: #FF9800; width: ${scores.sociale}%;"></div></div>
+            </div>
+            <div class="score-item">
+                <div class="score-label"><span>🌍 Ambientale</span><span>${scores.ambientale.toFixed(1)}</span></div>
+                <div class="score-bar-container"><div class="score-bar" style="background: #9C27B0; width: ${scores.ambientale}%;"></div></div>
+            </div>
+            <div class="score-item">
+                <div class="score-label"><span>📈 TOTALE</span><span>${scores.totale.toFixed(1)}</span></div>
+                <div class="score-bar-container"><div class="score-bar total-bar" style="width: ${scores.totale}%;"></div></div>
+            </div>
+        `;
+    }
+
+    // Funzione per prevenire XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Event listeners
+    document.getElementById('send-btn').addEventListener('click', sendMessage);
+    document.getElementById('message-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Carica la cronologia iniziale all'avvio
+    loadInitialHistory();
+</script>
+</body>
+</html>
