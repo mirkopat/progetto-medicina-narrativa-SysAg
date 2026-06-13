@@ -53,7 +53,7 @@ Il provider può essere selezionato modificando la variabile `LLM_PROVIDER` nel 
 
 ```bash
 # Clonare il repository
-git clone https://github.com/tuo-username/progetto-medicina-narrativa-SysAg.git
+git clone https://github.com/mirkopat/progetto-medicina-narrativa-SysAg.git
 cd progetto-medicina-narrativa-SysAg
 
 # Installare le dipendenze
@@ -118,7 +118,7 @@ progetto-medicina-narrativa-SysAg/
 │   └── index.html
 │
 ├── dati_json/                    # File JSON con i punteggi degli utenti (un file per utente)
-├── documentazione/               # Materiali di supporto (tabelle Excel, screenshot)
+├── documentazione/               # Materiali di supporto (documenti, tabelle Excel)
 │
 ├── main.py                       # Pipeline principale (console)
 ├── app_flask.py                  # Interfaccia web con Flask
